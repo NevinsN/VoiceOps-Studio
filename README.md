@@ -44,11 +44,69 @@ Rather than addressing model training or real-time streaming, VoiceOps Studio de
   - Input validation  
   - Basic audit logs (who generated it when)    
 5.	System Architecture  
-- Sleek UI built in React and supported by TypeScript, component-driven with no heavy UI frameworks  
-- Backend built in Python for speed, utilizing Async endpoints with clear service boundaries  
-- Database utilizing PostgresSQL with SQL/Alchemy/Prisma-style models  
-- AI Layer utilizing abstraced "Voice Provider" interface  
-- Infrastructure utilizing docker, environments, and simple background 
+Frontend  
+- Technology: React with TypeScript  
+- Responsibilities:   
+  - Script input and parameter selection  
+  - Browsing and comparing voice versions  
+  - Playback and review UI  
+  - Workflow status visibility and comments  
+- Design Rationale:  
+  - Component-driven architecture for clarity and reuse  
+  - Strong typing to reduce UI-level errors and improve maintainability  
+  - Minimal UI Framework usage to keep the system flexible and focused on behavior, not styling  
+  - Technology choices prioritize industry standards to reduce onboarding friction and improve long-term maintainability  
+Backend  
+- Technology: Python (FastAPI)
+- Responsibilities:  
+ - Script-to-voice generation orchestration  
+ - Versioning and metadata management  
+ - Workflow state transitions (Draft to Approved)  
+ - Deployment simulation logic  
+ - Security checks and audit logging  
+- Design Rationale:  
+  - Async endpoints to support concurrent generation and review workflows  
+  - Clear separation between API, business logic, and AI provider interfaces  
+  - Python ecosystem compatibility with AI tooling  
+Database  
+- Technolgy: PostgreSQL  
+- Responsibilities:  
+ - Persisting scripts, audio assets, and version metadata  
+ - Tracking workflow statuses and user actions  
+ - Supporting audit logs and historical traceability  
+- Design Rationale:  
+  - Relational modeling fits versioning and approval workflows  
+  - Strong consistency guarantees for auditability  
+  - Schema designed to mirror real enterprise data requirements  
+AI Layer  
+- Technolgy: Abstracted Voice Provider Interface  
+- Responsibilities:  
+ - Accepting script and parameter inputs  
+ - Generating audio via a configurable provider  
+ - Returning audio artifacts and generation metadata  
+- Design Rationale:  
+  - Keeps product usable with multiple AI vendors  
+  - Allows future provider swapping without system redesign  
+  - Retains focus on workflow systems, not models  
+Infrastructure  
+- Technolgy: Dockerized services with environment-based configuration  
+- Responsibilities:  
+ - Local development and testing parity  
+ - Isolated service execution  
+ - Simulated deployment targets  
+- Design Rationale:  
+  - Reproducible environments  
+  - Clear separation of concerns across services  
+  - Infrastructure patterns that resemble production without unnecessary complexity  
+Security and Observability  
+- Responsibilities:
+  - Rate limiting and abuse prevention  
+  - Input validation at API boundaries  
+  - Basic audit logging (who generated what, when, and why)  
+- Design Rationale:  
+  - Reinforces responsible AI usage  
+  - Demonstrates awareness of enterprise security expectations  
+  - Supports traceability and accountability  
 6.	Key Design Decisions  
 7.	Security Considerations 
 8.	Future Extensions  

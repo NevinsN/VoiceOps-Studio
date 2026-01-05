@@ -3,22 +3,14 @@ import uuid
 from typing import Dict
 
 
-class VoiceVersion:
-    """
-    Represents a version of a voice asset.
-    Encapsulates both data and behavior for workflow.
-    """
-    def __init__(self, asset_id: int,
-                 script: str,
-                 params: Dict,
-                 file_path: str):
-        self.version_id = str(uuid.uuid4())
-        self.asset_id = asset_id
-        self.script = script
-        self.params = params
-        self.file_path = file_path
-        self.status = "draft"  # draft, review, approved, rejected
-        self.created_at = datetime.now()
+class VoiceVersion(BaseModel):
+    version_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    asset_id: str
+    script: str
+    params: Dict = {}
+    file_path: str
+    status: str = "pending"
+    approved_at: Optional[datetime] = None
 
     # -------------------------
     # Status workflow methods

@@ -1,13 +1,11 @@
 from datetime import datetime
-import uuid
-from typing import Dict
+from app.models.version import VoiceVersion
 
+class VersioningService:
+    def approve(self, version: VoiceVersion) -> VoiceVersion:
+        if version.status == "approved":
+            return version
 
-class VoiceVersion(BaseModel):
-    version_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    asset_id: str
-    script: str
-    params: Dict = {}
-    file_path: str
-    status: str = "pending"
-    approved_at: Optional[datetime] = None
+        version.status = "approved"
+        version.approved_at = datetime.utcnow()
+        return version

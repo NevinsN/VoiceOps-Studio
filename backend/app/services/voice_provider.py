@@ -1,46 +1,16 @@
-import uuid
-from pathlib import Path
+import os
 from datetime import datetime
-from typing import Dict, Optional
 
+GENERATED_DIR = "generated_voices"
 
-# -----------------------------
-# Script class
-# -----------------------------
-class Script:
-    """
-    Represents a script for voice generation.
-    """
-    def __init__(self, text: str, parameters: Optional[Dict] = None):
-        self.id = str(uuid.uuid4())
-        self.text = text
-        self.parameters = parameters or {}
-        self.created_at = datetime.now()
-
-
-# -----------------------------
-# VoiceProvider class
-# -----------------------------
 class VoiceProvider:
-    """
-    Minimal TTS simulation for MVP.
-    Generates a dummy audio file and returns its path.
-    """
-    def __init__(self, output_dir="generated_voices"):
-        self.output_dir = Path(output_dir)
-        self.output_dir.mkdir(exist_ok=True)
+    def __init__(self):
+        os.makedirs(GENERATED_DIR, exist_ok=True)
 
-    def generate(self, script: Script) -> str:
-        """
-        Simulates voice generation from a Script object.
-        """
-        file_id = str(uuid.uuid4())
-        file_path = self.output_dir / f"{file_id}.mp3"
+    def generate(self, version_id: str, script: str) -> str:
+        file_path = f"{GENERATED_DIR}/{version_id}.txt"
 
-        # Simulate audio content
         with open(file_path, "w") as f:
-            f.write(
-                f"VOICE GENERATED\nSCRIPT ID: {script.id}\nTEXT: {script.text}\nPARAMS: {script.parameters}"
-            )
+            f.write(f"Generated at {datetime.utcnow()}:\n{script}")
 
-        return str(file_path)
+        return file_path
